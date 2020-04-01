@@ -5,7 +5,7 @@ class Dfa:
     def __init__(self):
         self.states = []
         self.alphabet = []
-        self.transitions = dict()
+        self.transitions = {}
         self.initial_state = []
         self.accepting_states = []
 
