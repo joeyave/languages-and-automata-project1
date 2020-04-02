@@ -2,32 +2,25 @@ import json
 
 
 class Dfa:
-    def __init__(self):
-        self.states = []
-        self.alphabet = []
-        self.transitions = {}
-        self.initial_state = []
-        self.accepting_states = []
-
-    def load_from_file(self, file_name):
+    def __init__(self, file_name):
         with open(file_name, 'r') as f:
             dfa_dict = json.load(f)
 
-        dfa_dict = dfa_dict[0]
-        self.states = dfa_dict['states']
         self.alphabet = dfa_dict['alphabet']
-        self.transitions = dfa_dict['transitions']
+        self.transitions = {}
+        for transition in dfa_dict['transitions']:
+            self.transitions[(transition[0], transition[1])] = transition[2]
         self.initial_state = dfa_dict['initial_state']
         self.accepting_states = dfa_dict['accepting_states']
 
     def transition_to_state(self, input_value):
-        if str((self.initial_state, input_value)) not in self.transitions.keys():
+        if (self.initial_state, input_value) not in self.transitions.keys():
             if input_value not in self.alphabet:
                 print("wrong symbol")
             self.initial_state = None
         else:
             prev_state = self.initial_state
-            self.initial_state = self.transitions[str((self.initial_state, input_value))]
+            self.initial_state = self.transitions[(self.initial_state, input_value)]
             print(f"{prev_state} -> {self.initial_state}")
 
     def in_accept_state(self):
